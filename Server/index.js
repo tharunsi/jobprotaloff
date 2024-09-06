@@ -22,8 +22,8 @@ const app = express();
 
 //app.use(cors());
 app.use(cors({
-  origin: 'https://jobhunt-n4p5.onrender.com',
-  methods: ["POST","GET"],
+  origin:  ['https://jobhunt-n4p5.onrender.com', 'http://localhost:5173'],
+  methods: ["POST","GET","UPDATE","DELETE"],
   credentials: true
 }));
 app.use(cookieParser());
@@ -73,7 +73,7 @@ app.get('/auth/google',
   app.get('/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/' }),
     (req, res) => {
-      // Successful authentication, redirect home.
+     
       res.redirect('https://jobhunt-n4p5.onrender.com/home');
     }
   );

@@ -3,6 +3,10 @@ import { user } from '../models/User.js';
 import jwt from 'jsonwebtoken';
 import bcrypt, { hash } from 'bcrypt';
 import cookieParser from 'cookie-parser';  
+import dotenv from 'dotenv';
+
+
+dotenv.config();
 
 const route = express.Router();
 
@@ -39,7 +43,7 @@ route.post("/logindetail", async (req, res) => {
         const { password, ...userWithoutPassword } = data.toObject();
 
         const name = data.name;
-        const token = jwt.sign({name}, "jwt-secret-key",{expiresIn: '1d'});
+        const token = jwt.sign({name},  process.env.JWT_SECRET,{expiresIn: '1d'});
         res.cookie('token', token);
         
         res.json({
