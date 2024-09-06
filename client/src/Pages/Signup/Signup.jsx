@@ -97,7 +97,7 @@ const Signup = () => {
     const errors = validate();
     if (Object.keys(errors).length === 0) {
       try {
-        const response = await axios.post("http://localhost:3000/api/user", {
+        const response = await axios.post("https://jobprotaloff.onrender.com/api/user", {
           name: formData.username,
           mail: formData.email,
           password: formData.password,

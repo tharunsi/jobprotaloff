@@ -22,7 +22,7 @@ const Internships = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/intern'); 
+        const response = await axios.get('https://jobprotaloff.onrender.com/intern'); 
         setCardData(response.data); 
         setFilteredData(response.data);
       } catch (error) {

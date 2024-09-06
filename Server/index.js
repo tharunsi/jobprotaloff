@@ -22,7 +22,7 @@ const app = express();
 
 //app.use(cors());
 app.use(cors({
-  origin: 'http://localhost:5173', // Your frontend URL
+  origin: 'https://jobhunt-n4p5.onrender.com',
   methods: ["POST","GET"],
   credentials: true
 }));
@@ -74,7 +74,7 @@ app.get('/auth/google',
     passport.authenticate('google', { failureRedirect: '/' }),
     (req, res) => {
       // Successful authentication, redirect home.
-      res.redirect('http://localhost:5173/home');
+      res.redirect('https://jobhunt-n4p5.onrender.com/home');
     }
   );
 

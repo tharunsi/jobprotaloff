@@ -13,7 +13,7 @@ const Dashboard = () => {
 
   const logLoginDate = async () => {
     try {
-      await axios.post('http://localhost:3000/date/login', { userId });
+      await axios.post('https://jobprotaloff.onrender.com/date/login', { userId });
     } catch (error) {
       console.error('Error logging login date:', error);
     }
@@ -22,7 +22,7 @@ const Dashboard = () => {
 
   const fetchLoginDates = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/api/login-dates/${userId}`);
+      const response = await axios.get(`https://jobprotaloff.onrender.com/api/login-dates/${userId}`);
       setLoginDates(response.data);
     } catch (error) {
       console.error('Error fetching login dates:', error);

@@ -40,7 +40,7 @@ const Template1 = () => {
         }
         
         console.log(`Fetching resume data with ID: ${resumeId}`);
-        const response = await axios.get(`http://localhost:3000/newapi/template/${resumeId}`);
+        const response = await axios.get(`https://jobprotaloff.onrender.com/newapi/template/${resumeId}`);
         console.log('API Response:', response.data);
         
         if (response.data) {

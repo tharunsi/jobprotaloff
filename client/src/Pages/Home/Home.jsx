@@ -25,7 +25,7 @@ function App() {
  useEffect(() => {
   const fetchData = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/api/auth");
+      const response = await axios.get("https://jobprotaloff.onrender.com/api/auth");
 
       if (response.data.Status === "Success") {
         setAuth(true)
@@ -65,7 +65,7 @@ useEffect(() => {
 }, []);
 
 const handleLogout =  () => {
-  axios.get("http://localhost:3000/api/logout")
+  axios.get("https://jobprotaloff.onrender.com/api/logout")
   .then(res => {
     location.reload(true);
   }).catch(err => console.log(err));

@@ -35,7 +35,7 @@ const Resume3 = () => {
   }
 
    try {
-     const response = await axios.post("http://localhost:3000/newapi/resume3", { ...formData,id: resumeId });
+     const response = await axios.post("https://jobprotaloff.onrender.com/newapi/resume3", { ...formData,id: resumeId });
 
      if (response.status === 200) {
       navigate(`/resume4?template=${templateId}`, { state: { resumeId } });

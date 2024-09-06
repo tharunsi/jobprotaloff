@@ -32,7 +32,7 @@ const Resume2 = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:3000/newapi/resume2",{ ...formData,id: resumeId });
+      const response = await axios.post("https://jobprotaloff.onrender.com/newapi/resume2",{ ...formData,id: resumeId });
 
       
       if (response.status === 200) {

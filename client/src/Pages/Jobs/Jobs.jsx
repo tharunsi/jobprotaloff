@@ -18,7 +18,7 @@ const Jobs = () => {
     
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/job'); 
+        const response = await axios.get('https://jobprotaloff.onrender.com/job'); 
         setCardData(response.data); 
         setFilteredData(response.data);
       } catch (error) {

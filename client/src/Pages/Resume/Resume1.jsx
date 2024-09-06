@@ -23,7 +23,7 @@ const Resume1 = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:3000/newapi/resume1", formData);
+      const response = await axios.post("https://jobprotaloff.onrender.com/newapi/resume1", formData);
 
       if (response.status === 201) {
         const data = response.data;

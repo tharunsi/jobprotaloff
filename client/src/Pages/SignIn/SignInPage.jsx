@@ -15,7 +15,7 @@ const SignInPage = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:3000/api/logindetail", values);
+      const response = await axios.post("https://jobprotaloff.onrender.com/api/logindetail", values);
 
       if (response.data.Status === "Success") {
         navigate("/home"); // Correctly use `navigate` to redirect
@@ -29,7 +29,7 @@ const SignInPage = () => {
   };
 
   const handleGoogleSignIn = () => {
-    window.location.href = "http://localhost:3000/auth/google"; // Redirect to Google OAuth
+    window.location.href = "https://jobprotaloff.onrender.com/auth/google"; // Redirect to Google OAuth
   };
 
   return (
