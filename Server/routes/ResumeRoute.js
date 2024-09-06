@@ -1,6 +1,6 @@
 import express from 'express';
 import mongoose from "mongoose";
-import { Resume } from '../models/Resume.js'; // Adjust the path as needed
+import { Resume } from '../models/resume.js'; // Adjust the path as needed
 
 export const routerResume = express.Router();
 
