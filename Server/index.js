@@ -28,6 +28,8 @@ app.use(cors({
 }));
 app.use(cookieParser());
 
+const port = process.env.PORT || 3000;
+
 mongoose.connect(process.env.MONGO_URI)
 .then(() => console.log("DB connected"))
 .catch((err) => console.log(err));
@@ -77,4 +79,4 @@ app.get('/auth/google',
   );
 
  
-app.listen(3000);
+app.listen(port);
