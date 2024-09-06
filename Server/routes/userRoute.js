@@ -94,7 +94,7 @@ const verifyUser = (req, res, next) => {
         return res.status(400).json({ Status: "Error", message: "You are not authenticated" });
     }
     else{
-        jwt.verify(token, "jwt-secret-key", (err,decoded) => {
+        jwt.verify(token, process.env.JWT_SECRET, (err,decoded) => {
             if(err){
                 return res.status(400).json({ Status: "Error", message: "Token is not okay" });
             }
