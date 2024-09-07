@@ -44,7 +44,12 @@ route.post("/logindetail", async (req, res) => {
 
         const name = data.name;
         const token = jwt.sign({name},  process.env.JWT_SECRET,{expiresIn: '1d'});
-        res.cookie('token', token);
+        res.cookie('token', token, {
+            httpOnly: true, 
+            secure: true, 
+            sameSite: 'None', // Required for cross-site cookies in HTTPS
+            maxAge: 24 * 60 * 60 * 1000 // 1 day expiration
+        });
         
         res.json({
             Status: "Success",
@@ -99,7 +104,7 @@ const verifyUser = (req, res, next) => {
                 return res.status(400).json({ Status: "Error", message: "Token is not okay" });
             }
             else{
-                req.name = decoded.name;
+                // req.name = decoded.name;
                 next();
             }
         })
@@ -109,7 +114,7 @@ const verifyUser = (req, res, next) => {
 route.get("/auth",verifyUser, async (req,res) =>{
    return   res.json({
     Status: "Success",
-    name : req.name
+    // name : req.name
 });
 })
 

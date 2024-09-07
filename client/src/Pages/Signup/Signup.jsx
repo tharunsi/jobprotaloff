@@ -91,7 +91,7 @@ const Signup = () => {
       errors.acceptTerms = "You must accept the terms and conditions";
     return errors;
   };
-
+  axios.defaults.withCredentials = true;
   const handleSubmit = async (e) => {
     e.preventDefault();
     const errors = validate();
