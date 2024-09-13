@@ -32,12 +32,13 @@ route.post("/logindetail", async (req, res) => {
 
         const name = data.name;
         const token = jwt.sign({name},  process.env.JWT_SECRET,{expiresIn: '1d'});
-        // res.cookie('token', token, {
-        //     httpOnly: true, 
-        //     secure: true, 
-        //     sameSite: 'None', // Required for cross-site cookies in HTTPS
-        //     maxAge: 24 * 60 * 60 * 1000 // 1 day expiration
-        // });
+        res.cookie('token', token, {
+            httpOnly: true, 
+            secure: true, 
+            sameSite: 'None', // Required for cross-site cookies in HTTPS
+            maxAge: 24 * 60 * 60 * 1000, // 1 day expiration
+            domain: '.jobhunt-n4p5.onrender.com'
+        });
         
         res.json({
             Status: "Success",
@@ -95,7 +96,11 @@ route.get("/auth",verifyUser, async (req,res) =>{
 })
 
 route.get("/logout",(req,res) => {
-    res.clearCookie('token');
+    res.clearCookie('token',{
+        secure:true,
+        sameSite: 'None',
+        domain: '.jobhunt-n4p5.onrender.com'
+    });
     return res.json({status: "Success"});
 })
 
