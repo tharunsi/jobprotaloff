@@ -1,10 +1,7 @@
 import React, { useEffect, useState ,useRef} from 'react';
 import './Home.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import myimage from "../../Image/avatar-jessica.jpeg";
 import { NavLink } from "react-router-dom";
-
 import googleimage from '../../Image/icons8-google.svg';
 import microsoftimage from '../../Image/icons8-microsoft.svg';
 import youtubeimage from '../../Image/icons8-youtube.svg';

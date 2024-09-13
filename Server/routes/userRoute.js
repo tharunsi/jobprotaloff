@@ -14,42 +14,30 @@ const unique_character = 10;
 
 route.use(express.json());
 
-// route.get("/user", async (req, res) => {
-//     try {
-//         const data = await user.find();
-//         res.json(data);
-//     } catch (error) {
-//         res.status(500).json({ message: error.message });
-//     }
-// });
-
 route.post("/logindetail", async (req, res) => {
     try {
-        // Query using 'mail' field as per your schema
         const data = await user.findOne({ mail: req.body.email });
         
         if (!data) {
             return res.status(404).json({ Status: "Error", message: "User not found" });
         }
 
-        // Check the password
         const isPasswordValid = await bcrypt.compare(req.body.password, data.password);
 
         if (!isPasswordValid) {
             return res.status(400).json({ Status: "Error", message: "Invalid password" });
         }
 
-        // Exclude the password from the response
         const { password, ...userWithoutPassword } = data.toObject();
 
         const name = data.name;
         const token = jwt.sign({name},  process.env.JWT_SECRET,{expiresIn: '1d'});
-        res.cookie('token', token, {
-            httpOnly: true, 
-            secure: true, 
-            sameSite: 'None', // Required for cross-site cookies in HTTPS
-            maxAge: 24 * 60 * 60 * 1000 // 1 day expiration
-        });
+        // res.cookie('token', token, {
+        //     httpOnly: true, 
+        //     secure: true, 
+        //     sameSite: 'None', // Required for cross-site cookies in HTTPS
+        //     maxAge: 24 * 60 * 60 * 1000 // 1 day expiration
+        // });
         
         res.json({
             Status: "Success",
@@ -61,20 +49,8 @@ route.post("/logindetail", async (req, res) => {
     }
 });
 
-
-
 route.post("/user", async (req, res) => {
-//     bcrypt.hash(req.body.password.toString(), unique_character, (err,hash) =>{
-//         if(err) return res.json({Error: "Error for hashing password"});
-//     })
-//     try {
-//         const data = new user(req.body);
-//         await data.save();
-//         res.json(data);
-//     } catch (error) {
-//         res.status(500).json({ message: error.message });
-//     }
-// });
+
 try {
     const hashedPassword = await bcrypt.hash(req.body.password.toString(), unique_character);
 
@@ -104,7 +80,7 @@ const verifyUser = (req, res, next) => {
                 return res.status(400).json({ Status: "Error", message: "Token is not okay" });
             }
             else{
-                // req.name = decoded.name;
+                 req.name = decoded.name;
                 next();
             }
         })
@@ -114,7 +90,7 @@ const verifyUser = (req, res, next) => {
 route.get("/auth",verifyUser, async (req,res) =>{
    return   res.json({
     Status: "Success",
-    // name : req.name
+     name : req.name
 });
 })
 
