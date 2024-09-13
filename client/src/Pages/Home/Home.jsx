@@ -61,11 +61,15 @@ useEffect(() => {
   };
 }, []);
 
-const handleLogout =  () => {
-  axios.get("https://jobprotaloff.onrender.com/api/logout")
-  .then(res => {
-    location.reload(true);
-  }).catch(err => console.log(err));
+const handleLogout = async () => {
+  try {
+    await axios.get("https://jobprotaloff.onrender.com/api/logout");
+    setAuth(false); // Update the auth state
+    setName(''); // Clear the name state
+    setMessages('You have been logged out.'); // Optional: Update messages state
+  } catch (err) {
+    console.log(err);
+  }
 }
 
   return (
