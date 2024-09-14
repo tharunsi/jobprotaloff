@@ -63,14 +63,15 @@ useEffect(() => {
 
 const handleLogout = async () => {
   try {
-    await axios.get("https://jobprotaloff.onrender.com/api/logout");
+    await axios.get("https://jobprotaloff.onrender.com/api/logout", { withCredentials: true });
     setAuth(false); // Update the auth state
     setName(''); // Clear the name state
-    
   } catch (err) {
-    console.log(err);
+    console.log("Logout failed: ", err);
+    alert("There was a problem logging out. Please try again.");
   }
-}
+};
+
 
   return (
     <div className="App">
