@@ -93,7 +93,15 @@ const Profile = () => {
 
   return (
     <div className="container-36">
-      <h1 className="h3-36 ">Settings</h1>
+      <header className="header-profile-243">
+        <div className="logo-profile-243">Job<span>Hunt</span></div>
+        <div className="heading-profile-243-main">Settigns</div>
+        <nav>
+          <ul>
+            
+            <li className="gotoprofile-profile-243">Go to profile</li>
+          </ul>
+        </nav></header>
       <div className="row-36">
         <div className="col-md-5-36">
           <div className="card1-36">
