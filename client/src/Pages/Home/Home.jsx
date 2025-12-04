@@ -70,7 +70,7 @@ const handleLogout =  () => {
 }
  const [image, setImage] = useState();
   useEffect(() => {
-    axios.get('http://localhost:3000/getimage', { withCredentials: true })
+    axios.get('http://jobprotaloff.onrender/getimage', { withCredentials: true })
     .then(res => {
       setImage(res.data.image); 
       console.log("Fetched data" ,res.data.image);
