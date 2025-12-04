@@ -251,7 +251,7 @@ li {
 	margin-bottom: 10px;
 	color: var(--dark);
 }
-t .breadcrumb {
+ .breadcrumb {
 	display: flex;
 	align-items: center;
 	grid-gap: 16px;
@@ -444,7 +444,11 @@ t .breadcrumb {
 .text-side{
 	padding-left:7px;
 }
-
+.head-label{
+	display:flex;
+	justify-content: space-between;
+	padding-bottom: 13px;
+}
 @media screen and (max-width: 768px) {
 	#sidebar {
 		width: 200px;

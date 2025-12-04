@@ -11,12 +11,19 @@
     background-color: white;
   }
   
-  .logo {
+  .logo-home-243 {
     font-size: 24px;
     font-weight: bold;
+    color:black;
+   
+  }
+
+  .logo-home-243 a{
+    text-decoration: none;
+    color:black;
   }
   
-  .logo span {
+  .logo-home-243 span {
     color: red;
   }
   
@@ -76,7 +83,7 @@
     border:none;
     width:100%;
   }
-
+  
   .hero {
     padding: 50px;
     background-color: #f8f9fa;
@@ -256,7 +263,7 @@
       color:#fff;
       cursor: pointer;
     }
-    .logo{
+    .logo-home-243{
       font-size: 16px;
       margin-left: 0%;
      }
@@ -265,7 +272,7 @@
      main{
       width:130%;
      }
-     .logo{
+     .logo-home-243{
       font-size: 16px;
       margin-left: -5%;
      }
@@ -289,7 +296,7 @@
       color:#fff;
       cursor: pointer;
     }
-    .logo{
+    .logo-home-243{
       font-size: 16px;
       margin-left: -5%;
      }

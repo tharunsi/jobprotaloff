@@ -2,12 +2,8 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faEnvelope,faHouse,faBookmark,faNewspaper,faCog,faBars,faSearch,faMapMarkerAlt,faCalendarDay,faHourglassHalf,faUsers,faClock,faTimes,
 } from '@fortawesome/free-solid-svg-icons';
-// import myimage from '../Image/avatar-jessica.jpeg';
-// import googleimage from '../Image/icons8-google.svg';
+
 import microsoftimage from '../../Image/icons8-microsoft.svg';
-// import youtubeimage from '../Image/icons8-youtube.svg';
-// import appleimage from '../Image/icons8-apple.svg';
-// import amazonimage from '../Image/icons8-amazon.svg';
 import { useNavigate } from 'react-router-dom';
 import './Jobcard1.css';
 import axios from 'axios';

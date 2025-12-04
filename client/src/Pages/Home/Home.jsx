@@ -61,16 +61,23 @@ useEffect(() => {
   };
 }, []);
 
-const handleLogout = async () => {
-  try {
-    await axios.get("https://jobprotaloff.onrender.com/api/logout");
-    setAuth(false); // Update the auth state
-    setName(''); // Clear the name state
-    
-  } catch (err) {
-    console.log(err);
-  }
+
+const handleLogout =  () => {
+  axios.get("http://jobprotaloff.onrender/api/logout")
+  .then(res => {
+    location.reload(true);
+  }).catch(err => console.log(err));
 }
+ const [image, setImage] = useState();
+  useEffect(() => {
+    axios.get('http://localhost:3000/getimage', { withCredentials: true })
+    .then(res => {
+      setImage(res.data.image); 
+      console.log("Fetched data" ,res.data.image);
+    })
+    .catch(err => console.log(err))
+   
+  }, [])
 
   return (
     <div className="App">
@@ -87,7 +94,7 @@ const handleLogout = async () => {
         {auth ? (
           <div className="profile-container" ref={dropdownRef}>
             <img
-              src={myimage}
+              src={`http://jobprotaloff.onrender/profileimages/${image}`}
               alt="Profile"
               className="profile-image"
               onClick={toggleDropdown}

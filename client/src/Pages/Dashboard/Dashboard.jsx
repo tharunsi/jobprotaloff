@@ -6,50 +6,45 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 
+
 const Dashboard = () => {
   const [loginDates, setLoginDates] = useState([]);
-  const userId = 'your-user-id';
 
-
-  const logLoginDate = async () => {
-    try {
-      await axios.post('https://jobprotaloff.onrender.com/date/login', { userId });
-    } catch (error) {
-      console.error('Error logging login date:', error);
-    }
-  };
-
-
-  const fetchLoginDates = async () => {
-    try {
-      const response = await axios.get(`https://jobprotaloff.onrender.com/api/login-dates/${userId}`);
-      setLoginDates(response.data);
-    } catch (error) {
-      console.error('Error fetching login dates:', error);
-    }
-  };
-
-  useEffect(() => {
-    logLoginDate();
+  const currentMonth = new Date().toLocaleString('default', { month: 'long' });
+    useEffect(() => {
+    const fetchLoginDates = async () => {
+      try {
+        
+        const res = await axios.get("http://jobprotaloff.onrender.com/api/login-dates", { withCredentials: true }); 
+        setLoginDates(res.data);
+      } catch (err) {
+        console.error("Error fetching login dates:", err);
+      }
+    };
     fetchLoginDates();
   }, []);
+ const [image, setImage] = useState();
+  useEffect(() => {
+    axios.get('http://localhost:3000/getimage', { withCredentials: true })
+    .then(res => {
+      setImage(res.data.image); 
+      console.log("Fetched data" ,res.data.image);
+    })
+    .catch(err => console.log(err))
+   
+  }, [])
 
-  const generateGridItems = () => {
-    const today = new Date();
-    const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+ 
 
-    const gridItems = [];
-    for (let i = 1; i <= daysInMonth; i++) {
-      const currentDate = new Date(today.getFullYear(), today.getMonth(), i).setHours(0, 0, 0, 0);
-      const isActive = loginDates.some(date => new Date(date).setHours(0, 0, 0, 0) === currentDate);
-
-      gridItems.push(
-        <div key={i} className={`grid-item ${isActive ? 'active' : 'inactive'}`}></div>
-      );
-    }
-
-    return gridItems;
-  };
+const generateGridItems = () => {
+  return loginDates.map((dayObj, index) => (
+    <div
+      key={index}
+      className={`grid-item ${dayObj.loggedIn ? "active" : "inactive"}`}
+      title={dayObj.date} // optional: hover to see date
+    >{dayObj.day}</div>
+  ));
+};
 
   return (
     <div>
@@ -123,7 +118,7 @@ const Dashboard = () => {
             <span className="num">8</span>
           </a>
           <NavLink to="/profile" className="profile">
-            <img src={myimage} alt="Profile" />
+            <img src={`http://jobprotaloff.onrender.com/profileimages/${image}`}  alt="Profile" />
           </NavLink>
         </nav>
 
@@ -173,10 +168,10 @@ const Dashboard = () => {
 
           <div className="table-data">
             <div className="order">
-              <div className="head">
+              <div className="head-label">
                 <h3>Recent Applications</h3>
-                {/* <FontAwesomeIcon icon={faSearch} />
-                <FontAwesomeIcon icon={faEllipsisV} /> */}
+                <FontAwesomeIcon icon={faSearch} />
+                <FontAwesomeIcon icon={faEllipsisV} />
               </div>
               <table>
                 <thead>
@@ -225,7 +220,7 @@ const Dashboard = () => {
             <div className='new-grid-dash-43'>
               <span>Your Activity</span>
               <br></br>
-              <p>This Month</p>
+              <p>This Month: {currentMonth}</p>
               <br></br>
               <div class="grid-container-dash-43">
               {generateGridItems()}

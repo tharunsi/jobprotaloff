@@ -2,11 +2,12 @@ import mongoose, { Schema } from "mongoose";
 
 const scheme = new Schema({
     name:String,
-    mail:{ type: String, unique: true, sparse: true },
+    email:{ type: String, unique: true, sparse: true },
     password:String,
     
     googleId: { type: String, unique: true, sparse: true },
-    loginDates: [{ type: Date }],
+    
+    loginDates: { type: [String], default: [] },
 });
 
 export const user=mongoose.model("user",scheme);

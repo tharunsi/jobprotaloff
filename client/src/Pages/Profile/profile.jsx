@@ -3,6 +3,8 @@ import "font-awesome/css/font-awesome.min.css";
 import './profile.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import axios from "axios";
+import { NavLink } from "react-router-dom";
 
 const Profile = () => {
   const [formData, setFormData] = useState({
@@ -16,7 +18,7 @@ const Profile = () => {
     city: "",
     state: "",
     zip: "",
-    profileImage: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBw0RDg0QEBAQDhIPEA0ODQ4PDQ8NDw8NFhEXFhURExUZHSggGBolGxMTITEhJSkrLi4uFx8zODMsNygtNSsBCgoKDQ0NDg0NDisZFRkrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrK//AABEIAOEA4QMBIgACEQEDEQH/xAAbAAEBAAMBAQEAAAAAAAAAAAAABAIDBQEGB//EAC0QAQABAgQEBQQCAwAAAAAAAAABAgMEESFxMUFRYSKBkaGxEjJC0VKSBcHw/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAH/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwD9xAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGqu/THfZpqxFXLT3BWIJuVTzn1Yg6I5zKK5jnPqC8R04irduoxFM8dPgG4AAAAAAAAAAAAAAAAAAGu9d+nflAPblyI4+iW5dme0dGFUzM5y8VAABqqv0xzz21aL97PSOHy0gtjEU7bw2xLmtlm7NM9ucAuHkTnq9BnbuTHD05KrV2Ku09EREg6I02L2ek8fluRQAAAAAAAAAAAAAGF2vKM/TdFVMzOcs71zOe0cGtQAEGnE15U76eTclxc6xHYE4AAAKsJXpMdNY2UIsNPijvnC0AACJW2bn1R3jiiZW68pifXYF48iXqKAAAAAAAAAANWIryp30bUmKq8WXQGkBUAAEmL+6No+ZVp8ZTwnyBKAAADZh/vjz+FyTCU6zPSPdWAAAACrC16ZdPhvRWKsqo76LUUAAAAAAAAAAQXJzqneV7nAAKgAAxrpziY6sgHOqpmJyl4uu2oq7T1TVYeqO+wNT2GyLFfTLeVFqzFOvGeoMrNH0xl5zuzAAAAACJdGHOX2/tp2j4RWQAAAAAAAAADnOiguRrO8gxAVAAAYXLtNPH05p68TVPDT3kFbyao6x6oKqpnjMz5sQdH6o6x6w9c17EzHCctgdER0YiqOOu6i3epntPSQbAAAAF9v7ado+EDoRCK9AAAAAAAAAAR4mnxbrGnE05059PgEgCoJr2I5U+c/p7ibv4x5/pKAAAAAAAACiziMtKuHXoqc1RhruXhnhy7SCoAGdmnOqPVcnwlHGfKFCKAAAAAAAAAAAAhu0ZTl6bNVyrKJn/ALNfet/VHfk5WMnhG8yqJpl4AAAAAAAAAAALrFedPfhLbRTnMQjwlWsx1j3dbD2soznjPtANtMZREdHoIoAAAAAAAAAAAAjx2E+vxR90e8dFgD52YmNJ0y4w8drFYSmvXhVyq/blX7FVE5VRtPKfNUagAAAAAAABnatVVTlTGf8Ard1cJgoo1nxVe0bA14DBzGVdXH8aeneV4IoAAAAAAAAAAAAAAAA8qpiYymM46Tq9AQ3v8bTOtM/T2nWEVzBXafxz706u2A+dmJjjpvo8fRTETx1YTYt/wp/rAOAQ78WLf8Kf6wzimI4REbRkDiW8Jcq4UzHefCss/wCMj85z7RpHq6ADG3RTTGURER2ZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//2Q==",
+    // profileImage: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBw0RDg0QEBAQDhIPEA0ODQ4PDQ8NDw8NFhEXFhURExUZHSggGBolGxMTITEhJSkrLi4uFx8zODMsNygtNSsBCgoKDQ0NDg0NDisZFRkrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrK//AABEIAOEA4QMBIgACEQEDEQH/xAAbAAEBAAMBAQEAAAAAAAAAAAAABAIDBQEGB//EAC0QAQABAgQEBQQCAwAAAAAAAAABAgMEESFxMUFRYSKBkaGxEjJC0VKSBcHw/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAH/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwD9xAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGqu/THfZpqxFXLT3BWIJuVTzn1Yg6I5zKK5jnPqC8R04irduoxFM8dPgG4AAAAAAAAAAAAAAAAAAGu9d+nflAPblyI4+iW5dme0dGFUzM5y8VAABqqv0xzz21aL97PSOHy0gtjEU7bw2xLmtlm7NM9ucAuHkTnq9BnbuTHD05KrV2Ku09EREg6I02L2ek8fluRQAAAAAAAAAAAAAGF2vKM/TdFVMzOcs71zOe0cGtQAEGnE15U76eTclxc6xHYE4AAAKsJXpMdNY2UIsNPijvnC0AACJW2bn1R3jiiZW68pifXYF48iXqKAAAAAAAAAANWIryp30bUmKq8WXQGkBUAAEmL+6No+ZVp8ZTwnyBKAAADZh/vjz+FyTCU6zPSPdWAAAACrC16ZdPhvRWKsqo76LUUAAAAAAAAAAQXJzqneV7nAAKgAAxrpziY6sgHOqpmJyl4uu2oq7T1TVYeqO+wNT2GyLFfTLeVFqzFOvGeoMrNH0xl5zuzAAAAACJdGHOX2/tp2j4RWQAAAAAAAAADnOiguRrO8gxAVAAAYXLtNPH05p68TVPDT3kFbyao6x6oKqpnjMz5sQdH6o6x6w9c17EzHCctgdER0YiqOOu6i3epntPSQbAAAAF9v7ado+EDoRCK9AAAAAAAAAAR4mnxbrGnE05059PgEgCoJr2I5U+c/p7ibv4x5/pKAAAAAAAACiziMtKuHXoqc1RhruXhnhy7SCoAGdmnOqPVcnwlHGfKFCKAAAAAAAAAAAAhu0ZTl6bNVyrKJn/ALNfet/VHfk5WMnhG8yqJpl4AAAAAAAAAAALrFedPfhLbRTnMQjwlWsx1j3dbD2soznjPtANtMZREdHoIoAAAAAAAAAAAAjx2E+vxR90e8dFgD52YmNJ0y4w8drFYSmvXhVyq/blX7FVE5VRtPKfNUagAAAAAAABnatVVTlTGf8Ard1cJgoo1nxVe0bA14DBzGVdXH8aeneV4IoAAAAAAAAAAAAAAAA8qpiYymM46Tq9AQ3v8bTOtM/T2nWEVzBXafxz706u2A+dmJjjpvo8fRTETx1YTYt/wp/rAOAQ78WLf8Kf6wzimI4REbRkDiW8Jcq4UzHefCss/wCMj85z7RpHq6ADG3RTTGURER2ZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//2Q==",
     resume: null,
     currentPassword: "",
     newPassword: "",
@@ -27,6 +29,9 @@ const Profile = () => {
       showPhone: false,
     },
   });
+   const [file, setFile] = useState();
+  const [image, setImage] = useState();
+
 
   const [activeTab, setActiveTab] = useState("account");
 
@@ -51,19 +56,29 @@ const Profile = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     alert("Settings updated successfully!");
-    console.log(formData);
+    // console.log(formData);
   };
 
   const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setFormData({ ...formData, profileImage: reader.result });
-      };
-      reader.readAsDataURL(file);
-    }
+    const formsData = new FormData()
+    formsData.append('file', file)
+    axios.post('http://jobprotaloff.onrender/imageupload', formsData, { withCredentials: true })
+    .then(res => console.log("Upload success:", res.data))
+    .catch(err => console.log("Upload error:", err))
   };
+
+  useEffect(() => {
+    axios.get('http://jobprotaloff.onrender/getimage', { withCredentials: true })
+    .then(res => {
+      // setImage(res.data[res.data.length - 1].image); 
+      // console.log("Fetched data" ,res.data[0].image);
+      setImage(res.data.image);
+console.log("Fetched data", res.data.image);
+
+    })
+    .catch(err => console.log("Fetch image error:", err))
+   
+  }, [])
 
   const handleResumeUpload = (e) => {
     const file = e.target.files[0];
@@ -91,15 +106,21 @@ const Profile = () => {
     // Logic to redirect to resume creation page can be added here
   };
 
-  return (
+  useEffect(() => {
+    console.log('Image state:', image);
+    console.log('Constructed Image URL:', `http://jobprotaloff.onrender/profileimages/${image}`);
+  }, [image]);
+
+   const avatar = "data:image/png;base64,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";
+ return (
     <div className="container-36">
       <header className="header-profile-243">
         <div className="logo-profile-243">Job<span>Hunt</span></div>
-        <div className="heading-profile-243-main">Settigns</div>
+        <div className="heading-profile-243-main">Settings</div>
         <nav>
           <ul>
             
-            <li className="gotoprofile-profile-243">Go to profile</li>
+          <NavLink to="/profile"> <li className="gotoprofile-profile-243">Go to profile</li></NavLink> 
           </ul>
         </nav></header>
       <div className="row-36">
@@ -140,10 +161,8 @@ const Profile = () => {
             </div>
           </div>
         </div>
-
         <div className="col-md-7-36">
           <div className="tab-content-36">
-            {/* Account Tab */}
             {activeTab === "account" && (
               <div className="tab1-pane-36 fade-36 show-36 active-36" id="account-36" role="tabpanel">
                 <div className="card2-36">
@@ -177,21 +196,17 @@ const Profile = () => {
                         </div>
                         <div className="col-md-4-36">
                           <div className="text-center1-36">
-                            <img
-                              alt="Profile"
-                              src={formData.profileImage}
-                              className="img1-responsive-36"
-                             
-                            />
+                            <img src={`http://localhost:3000/profileimages/${image}` || avatar} className="img1-responsive-36" alt="profile" />
                             <div className="mt-2-36">
                               <input
                                 type="file"
                                 accept="image/*"
                                 className="btn1-36 btn-primary-36"
                                 
-                                onChange={handleImageUpload}
+                                onChange={e => setFile(e.target.files[0])}
                               />
                             </div>
+                            <button onClick={handleImageUpload} className="upload-button-profile-243">Upload</button>
                             <small>
                               For best results, use an image at least 128px by 128px in .jpg format
                             </small>
@@ -207,12 +222,10 @@ const Profile = () => {
                     </form>
                   </div>
                 </div>
-
                 <div className="card3-36 mt-4-36">
                   <div className="card-header2-36">
                     <div className="card-actions-36 float-right-36">
-                      <div className="dropdown-36 show-36">
-                        
+                      <div className="dropdown-36 show-36">  
                       </div>
                     </div>
                     <h5 className="card-title1-36">Private Info</h5>
@@ -240,8 +253,6 @@ const Profile = () => {
                             onChange={handleInputChange}
                           />
                         </div>
-                      
-
                       <div className="form-group-36 mb-3-36">
                         <input
                           type="email"
@@ -272,8 +283,6 @@ const Profile = () => {
                           onChange={handleInputChange}
                         />
                       </div>
-                      
-                      
                         <div className="form-group-36 col-md-6-36 mb-3-36">
                           <input
                             type="text"
@@ -317,8 +326,6 @@ const Profile = () => {
                 </div>
               </div>
             )}
-
-            {/* Resume Tab */}
             {activeTab === "resume" && (
               <div className="tab-pane-36 fade-36 show-36 active-36" id="resume-36" role="tabpanel">
                 <div className="card6-36">
@@ -437,7 +444,19 @@ const Profile = () => {
                   </div>
                   <div className="card88-body44-36">
                     <form onSubmit={handleSubmit}>
-                      
+                      <div className="form99-group-36 mb-3-36">
+                        <label htmlFor="currentPassword" className="form-hi-label-36">
+                          Current Password
+                        </label>
+                        <input
+                          type="password"
+                          className="form44-control-36"
+                          id="currentPassword"
+                          // placeholder="Current Password"
+                          value={formData.currentPassword}
+                          onChange={handleInputChange}
+                        />
+                      </div>
                       <div className="form99-group-36 mb-3-36">
                         <label htmlFor="newPassword" className="form-hi-label-36">
                           New Password

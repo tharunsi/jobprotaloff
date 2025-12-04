@@ -1,18 +1,24 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 
-const scheme = new Schema({
-  userName: String,
-  bio: String,
-  profileImage: String,
-  firstName: String,
-  lastName: String,
-  email: String,
-  address1: String,
-  address2:String,
-  city:String,
-  state:String,
-  zip:String,
-  resume: String,       // Path to the resume file
-});
+const schema = new mongoose.Schema({
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
+    firstname : String,
+    lastname : String,
+    email: String,
+    phone : String,
+    address : String,
+    linkedin : String,
+    github : String,
+    skills: [String],
+    education: [String],
+    experience: [{
+        company: String,
+        position:String,
+        duration:String
+    }],
+    projects: [String]
 
-export const profile=mongoose.model("usProfiler",scheme);
+
+})
+
+export const profileData= mongoose.model('ProfileData',schema);
