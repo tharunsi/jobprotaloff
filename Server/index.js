@@ -15,6 +15,9 @@ import {routerResume} from "./routes/ResumeRoute.js";
 import {ProfileDataRoute} from "./routes/profileRoute.js";
 import {profile} from "./models/profileImage.js";
 import passport from './routes/passport.js';
+import { v2 as cloudinary } from "cloudinary";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+
 
 
 dotenv.config();
@@ -55,7 +58,7 @@ app.use(session({
   app.use(passport.initialize());
   app.use(passport.session());
 
-const storage = multer.diskStorage({
+const diskStorage = multer.diskStorage({
     destination: function(req, file, cb){
         return cb(null, "./public/Images")
     },
@@ -64,7 +67,7 @@ const storage = multer.diskStorage({
     }
 })
 
-const upload = multer({storage})
+const upload = multer({diskStorage})
 
 app.post('/upload', protectRoute, upload.single('file'), async (req, res) => {
   try {
@@ -125,19 +128,35 @@ function isAuthenticated(req, res, next) {
   }
   res.redirect('/'); // Redirect to login if not authenticated
 }
- const imagestorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'publics/profileimages')
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
-   
-  }
- })
 
- const profileupload = multer({
-  storage: imagestorage
- })
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET,
+});
+
+const cloudinaryStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'profile_pics',
+    allowed_formats: ['jpg', 'png', 'jpeg'],
+  },
+});
+
+export const uploadCloud = multer({ cloudinaryStorage });
+//  const imagestorage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, 'publics/profileimages')
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
+   
+//   }
+//  })
+
+//  const profileupload = multer({
+//   storage: imagestorage
+//  })
 
 //  app.post('/imageupload',profileupload.single('file'), (req, res) => {
 //       profile.create({image: req.file.filename})
@@ -146,25 +165,34 @@ function isAuthenticated(req, res, next) {
 
 //   })
 
-app.post('/imageupload', protectRoute, profileupload.single('file'), async (req, res) => {
-  try {
-    const userId = req.user._id;
+// app.post('/imageupload', protectRoute, profileupload.single('file'), async (req, res) => {
+//   try {
+//     const userId = req.user._id;
 
-    // Update existing or create new
-    const userImage = await profile.findOneAndUpdate(
-      { user: userId },
-      { image: req.file.filename },
-      { new: true, upsert: true }
-    );
+//     // Update existing or create new
+//     const userImage = await profile.findOneAndUpdate(
+//       { user: userId },
+//       { image: req.file.filename },
+//       { new: true, upsert: true }
+//     );
 
-    res.status(201).json({ message: "Image uploaded successfully", image: userImage });
-  } catch (err) {
-    console.error("Error uploading image:", err);
-    res.status(500).json({ message: "Error uploading image" });
-  }
+//     res.status(201).json({ message: "Image uploaded successfully", image: userImage });
+//   } catch (err) {
+//     console.error("Error uploading image:", err);
+//     res.status(500).json({ message: "Error uploading image" });
+//   }
+// });
+
+app.post('/imageupload', protectRoute,uploadCloud.single('file'), (req, res) => {
+    // req.file.path is the URL returned by Cloudinary!
+   profile.findOneAndUpdate(
+        { user: req.user._id }, // Find by user ID
+        { image: req.file.path }, // Update the Cloudinary URL
+        { upsert: true, new: true } // If it doesn't exist, create it
+    )
+    .then(result => res.json(result))
+    .catch(err => res.status(500).json({ error: "DB Error", details: err }));
 });
-
-
   
   app.get('/getimage', protectRoute, async (req, res) => {
   try {
