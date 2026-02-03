@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import "font-awesome/css/font-awesome.min.css";
 import './profile.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
