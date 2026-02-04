@@ -65,14 +65,17 @@ const Profile = () => {
     const formsData = new FormData()
     formsData.append('file', file)
     
-    axios.post('https://jobprotaloff.onrender.com/imageupload', formsData, { withCredentials: true })
+    axios.post('https://jobprotaloff.onrender.com/imageupload', formsData, { 
+      headers: {"Content-Type":"multipart/form-data"},
+      withCredentials: true })
     .then(res => {console.log("Upload success:", res.data)
       setImage(res.data.image); 
     alert("Image uploaded")
     window.location.reload()
     })
-    .catch(err => console.log("Upload error:", err))
+    .catch(err => {console.log("Upload error:", err)
     alert("Failed to upload image.");
+    })
   };
 
   useEffect(() => {

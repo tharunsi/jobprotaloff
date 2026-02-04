@@ -116,6 +116,9 @@ const cloudinaryStorage = new CloudinaryStorage({
 export const uploadCloud = multer({ storage : cloudinaryStorage });
 
 app.post('/imageupload', protectRoute,uploadCloud.single('file'), (req, res) => {
+  console.log("REQ FILE:", req.file);
+    console.log("REQ USER:", req.user);
+
     if (!req.file) return res.status(400).json({ error: "No file provided" });
     // req.file.path is the URL returned by Cloudinary!
    profile.findOneAndUpdate(
