@@ -5,7 +5,6 @@ import session from 'express-session';
 import cookieParser from 'cookie-parser';  
 // import loginRoute from "./routes/loginRoute.js";
 import dotenv from 'dotenv';
-import path from "path";
 import jwt from 'jsonwebtoken';
 
 import {router} from "./routes/SchemaRoute.js";
@@ -38,7 +37,7 @@ app.use(cors({
 }));
 app.use(cookieParser());
 
- app.use(express.static('publics'))
+//  app.use(express.static('publics'))
 
 const port = process.env.PORT || 3000;
 
@@ -58,29 +57,29 @@ app.use(session({
   app.use(passport.initialize());
   app.use(passport.session());
 
-const diskStorage = multer.diskStorage({
-    destination: function(req, file, cb){
-        return cb(null, "./public/Images")
-    },
-    filename: function (req, file, cb){
-        return cb(null, `${Date.now()}_${file.originalname}`)
-    }
-})
+// const diskStorage = multer.diskStorage({
+//     destination: function(req, file, cb){
+//         return cb(null, "./public/Images")
+//     },
+//     filename: function (req, file, cb){
+//         return cb(null, `${Date.now()}_${file.originalname}`)
+//     }
+// })
 
-const upload = multer({diskStorage})
+// const upload = multer({diskStorage})
 
-app.post('/upload', protectRoute, upload.single('file'), async (req, res) => {
-  try {
-    const userId = req.user._id;
-    console.log("Uploaded by:", userId);
-    console.log("File info:", req.file);
+// app.post('/upload', protectRoute, upload.single('file'), async (req, res) => {
+//   try {
+//     const userId = req.user._id;
+//     console.log("Uploaded by:", userId);
+//     console.log("File info:", req.file);
 
-    res.json({ message: "File uploaded successfully", userId, file: req.file });
-  } catch (error) {
-    console.error("Error uploading:", error);
-    res.status(500).json({ message: "Upload failed" });
-  }
-});
+//     res.json({ message: "File uploaded successfully", userId, file: req.file });
+//   } catch (error) {
+//     console.error("Error uploading:", error);
+//     res.status(500).json({ message: "Upload failed" });
+//   }
+// });
 
 
 app.use("/job",router);
@@ -143,45 +142,7 @@ const cloudinaryStorage = new CloudinaryStorage({
   },
 });
 
-export const uploadCloud = multer({ cloudinaryStorage });
-//  const imagestorage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, 'publics/profileimages')
-//   },
-//   filename: (req, file, cb) => {
-//     cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname))
-   
-//   }
-//  })
-
-//  const profileupload = multer({
-//   storage: imagestorage
-//  })
-
-//  app.post('/imageupload',profileupload.single('file'), (req, res) => {
-//       profile.create({image: req.file.filename})
-//       .then(result => res.json(result))
-//       .catch(err => console.log(err))
-
-//   })
-
-// app.post('/imageupload', protectRoute, profileupload.single('file'), async (req, res) => {
-//   try {
-//     const userId = req.user._id;
-
-//     // Update existing or create new
-//     const userImage = await profile.findOneAndUpdate(
-//       { user: userId },
-//       { image: req.file.filename },
-//       { new: true, upsert: true }
-//     );
-
-//     res.status(201).json({ message: "Image uploaded successfully", image: userImage });
-//   } catch (err) {
-//     console.error("Error uploading image:", err);
-//     res.status(500).json({ message: "Error uploading image" });
-//   }
-// });
+export const uploadCloud = multer({ storage : cloudinaryStorage });
 
 app.post('/imageupload', protectRoute,uploadCloud.single('file'), (req, res) => {
     // req.file.path is the URL returned by Cloudinary!
