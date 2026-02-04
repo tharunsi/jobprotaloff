@@ -59,8 +59,12 @@ const Profile = () => {
   };
 
   const handleImageUpload = (e) => {
+     e.preventDefault();
+
+    if (!file) return;
     const formsData = new FormData()
     formsData.append('file', file)
+    
     axios.post('https://jobprotaloff.onrender.com/imageupload', formsData, { withCredentials: true })
     .then(res => console.log("Upload success:", res.data))
     .catch(err => console.log("Upload error:", err))
