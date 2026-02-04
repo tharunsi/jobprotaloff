@@ -196,7 +196,9 @@ console.log("Fetched data", res.data.image);
                         </div>
                         <div className="col-md-4-36">
                           <div className="text-center1-36">
-                            <img src={`http://localhost:3000/profileimages/${image}` || avatar} className="img1-responsive-36" alt="profile" />
+                            {/* <img src={`http://localhost:3000/profileimages/${image}` || avatar} className="img1-responsive-36" alt="profile" /> */}
+                            <img src={image || avatar} className="img1-responsive-36" alt="profile" />
+
                             <div className="mt-2-36">
                               <input
                                 type="file"
