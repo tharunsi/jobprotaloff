@@ -63,14 +63,14 @@ useEffect(() => {
 
 
 const handleLogout =  () => {
-  axios.get("http://jobprotaloff.onrender/api/logout")
+  axios.get("https://jobprotaloff.onrender.com/api/logout")
   .then(res => {
     location.reload(true);
   }).catch(err => console.log(err));
 }
  const [image, setImage] = useState();
   useEffect(() => {
-    axios.get('http://jobprotaloff.onrender/getimage', { withCredentials: true })
+    axios.get('https://jobprotaloff.onrender.com/getimage', { withCredentials: true })
     .then(res => {
       setImage(res.data.image); 
       console.log("Fetched data" ,res.data.image);
@@ -94,7 +94,7 @@ const handleLogout =  () => {
         {auth ? (
           <div className="profile-container" ref={dropdownRef}>
             <img
-              src={`http://jobprotaloff.onrender/profileimages/${image}`}
+              src={`https://jobprotaloff.onrender.com/profileimages/${image}`}
               alt="Profile"
               className="profile-image"
               onClick={toggleDropdown}
