@@ -16,20 +16,15 @@ import {profile} from "./models/profileImage.js";
 import passport from './routes/passport.js';
 import { v2 as cloudinary } from "cloudinary";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
-
-
+import cors from 'cors'
+import protectRoute from "./middleware/protectRoute.js";
 
 dotenv.config();
 
-
 console.log(process.env);
 
-// import { Router } from "express";
-import cors from 'cors'
-import protectRoute from "./middleware/protectRoute.js";
 const app = express();
 
-//app.use(cors());
 app.use(cors({
   origin:  ['https://jobhunt-n4p5.onrender.com', 'http://localhost:5173'],
   methods: ["POST","GET","UPDATE","DELETE"],
@@ -57,31 +52,6 @@ app.use(session({
   app.use(passport.initialize());
   app.use(passport.session());
 
-// const diskStorage = multer.diskStorage({
-//     destination: function(req, file, cb){
-//         return cb(null, "./public/Images")
-//     },
-//     filename: function (req, file, cb){
-//         return cb(null, `${Date.now()}_${file.originalname}`)
-//     }
-// })
-
-// const upload = multer({diskStorage})
-
-// app.post('/upload', protectRoute, upload.single('file'), async (req, res) => {
-//   try {
-//     const userId = req.user._id;
-//     console.log("Uploaded by:", userId);
-//     console.log("File info:", req.file);
-
-//     res.json({ message: "File uploaded successfully", userId, file: req.file });
-//   } catch (error) {
-//     console.error("Error uploading:", error);
-//     res.status(500).json({ message: "Upload failed" });
-//   }
-// });
-
-
 app.use("/job",router);
 app.use("/api",route);
 app.use("/intern",router1);
@@ -99,8 +69,9 @@ app.get('/auth/google',
     const token = jwt.sign({ userId: req.user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
     res.cookie('token', token, {
       httpOnly: true,
-      sameSite: 'lax',
-      // secure: true // enable on https
+      sameSite: 'none',
+      secure: true, // enable on https
+      maxAge: 24 * 60 * 60 * 1000
     });
     // Successful authentication, redirect home.
     res.redirect('http://jobprotaloff.onrender/home');
@@ -145,6 +116,7 @@ const cloudinaryStorage = new CloudinaryStorage({
 export const uploadCloud = multer({ storage : cloudinaryStorage });
 
 app.post('/imageupload', protectRoute,uploadCloud.single('file'), (req, res) => {
+    if (!req.file) return res.status(400).json({ error: "No file provided" });
     // req.file.path is the URL returned by Cloudinary!
    profile.findOneAndUpdate(
         { user: req.user._id }, // Find by user ID
